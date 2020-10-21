@@ -1,0 +1,49 @@
+{%extends 'base_servers.html'%}
+
+{%block servers%}
+    <table class="table table-hover table-sm">
+      <thead>
+        <tr>
+          <th scope="col">#</th>
+          <th scope="col">Name</th>
+          <th scope="col">Status</th>
+          <th scope="col">Host</th>
+          <th scope="col">Port</th>
+          <th scope="col">Last test</th>
+          <th scope="col">Date created</th>
+          <th scope="col">Remove server</th>
+        </tr>
+      </thead>
+      <tbody>
+      {%for server in servers%}
+        <tr>
+          <th scope="row">{{loop.index}}</th>
+          <td>{{server.name}}</td>
+          <td>
+            {%if server.status == True%}
+              <div class="spinner-border spinner-border-sm text-success" role="status">
+              </div>
+              <span class="text text-success"> Running</span>
+            {%else%}
+              <div class="spinner-grow text-danger" role="status">
+                <span class="sr-only">Up</span>
+              </div>
+            {%endif%}
+          </td>
+          <td>{{server.host}}</td>
+          <td>{{server.port}}</td>
+          <td>{{server.lastCheck}}</td>
+          <td>{{server.dateCreated}}</td>
+          <td>
+            <form method="post" action="{% url 'remove_server'%}" >
+              {% csrf_token n%}
+              <input type="text" name="current_url" value="{{request.path}}" hidden="hidden">
+              <input type="text" name="remove_server" value="{{server.host}}" hidden="hidden">
+              <input class="btn btn-danger" value="Remove" type="submit">
+            </form>
+          </td>
+        </tr>
+      {%endfor%}
+      </tbody>
+    </table>
+{%endblock%}

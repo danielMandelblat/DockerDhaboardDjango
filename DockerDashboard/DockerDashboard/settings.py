@@ -21,6 +21,7 @@ ALLOWED_HOSTS = []
 # Application definition
 
 INSTALLED_APPS = [
+    'crispy_forms',
     'servers',
     'containers',
     'django.contrib.admin',
@@ -118,3 +119,5 @@ STATIC_URL = '/static/'
 STATICFILES_DIRS = [
     STATIC_DIR,
 ]
+
+CRISPY_TEMPLATE_PACK = 'bootstrap4'
