@@ -11,13 +11,14 @@ def index(request):
 
 def newServer(request):
     from servers.froms import newServer
-    form = newServer(request.POST)
-
-    if form.is_valid():
-        messages.success(request, f"Host added successfully")
-        form.save()
-    else:
-        messages.error(request, f"Host added failed")
+    form = newServer()
+    if request.method == 'POST':
+        form = newServer(request.POST)
+        if form.is_valid():
+            messages.success(request, f"Host added successfully")
+            form.save()
+        else:
+            messages.error(request, f"Host added failed")
 
     data = {"title":"New server", "form":form}
     return render(request, 'newServer.html', data)
@@ -26,7 +27,16 @@ def removeServer(request):
     if request.method == 'POST':
         serverToDelete=request.POST.get('remove_server')
         current_url=request.POST.get('current_url')
-        messages.success(request,"Server removed successfully")
+
+        try:
+            ServerToBeDeleted=server.objects.get(host=serverToDelete)
+            ServerToBeDeleted.delete()
+
+            messages.success(request, "Server removed successfully")
+        except Exception as e:
+            messages.warning(request, f"The server didn't found on the DB")
+        finally :
+            return redirect(current_url)
+
     else:
-        messages.warning(request, "Failed to remove the server ")
-    return redirect(current_url)
+         return redirect('/')

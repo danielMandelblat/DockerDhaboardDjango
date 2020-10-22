@@ -10,6 +10,7 @@ class server(models.Model):
     lastCheck = models.DateTimeField(auto_now_add=True)
     status = models.BooleanField(default=False, editable=False)
 
+
     def clean(self):
         try:
             import socket
@@ -18,12 +19,12 @@ class server(models.Model):
             print(f"result: {result}")
             if result == 0:
                 self.status = True
+
             else:
+
                 raise ValidationError(f"The {self.host}:{self.port} not response")
 
-
         except Exception as e:
-            print(e)
             raise ValidationError(e)
 
     def __str__(self):

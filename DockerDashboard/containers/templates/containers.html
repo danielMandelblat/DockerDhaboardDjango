@@ -1,0 +1,93 @@
+{%extends 'base_containers.html'%}
+{%load static%}
+{%block data%}
+
+    <table class="table table-sm table-hover">
+      <thead>
+        <tr>
+          <th scope="col">#</th>
+          <th scope="col"></th>
+          <th scope="col">Id</th>
+          <th scope="col">Status</th>
+          <th scope="col">Names</th>
+          <th scope="col">Image</th>
+          <th scope="col">Command</th>
+          <th scope="col">Created at</th>
+          <th scope="col">Ports</th>
+          <th scope="col">Ports</th>
+        </tr>
+      </thead>
+      <tbody>
+        {%if cn%}
+          {%for c in cn%}
+            <tr>
+              <th scope="row">{{forloop.counter}}</th>
+              <td>
+                <img src="{%static '\img\containers\docker_blue_icon.png'%}" width="20">
+              </td>
+              <td>{{c.id}}</td>
+              <td>
+                {%if c.State == 'exited'%}
+                  <div class="spinner-grow text-danger spinner-grow-sm" role="status">
+                  </div>
+                  <p>Exited</p>
+                {%elif c.State == 'created'%}
+                   <div class="spinner-grow text-warning spinner-grow-sm" role="status">
+                   </div>
+                   <p>Created</p>
+                {%elif c.State == 'running'%}
+                  <div class="spinner-border spinner-border-sm text-success" role="status">
+                  </div>
+                  <p>Running</p>
+                {%else%}
+                {%endif%}
+              </td>
+              <td>{{c.names}}</td>
+              <td>{{c.imageID}}</td>
+              <td>{{c.command}}</td>
+              <td>{{c.created}}</td>
+              <td>
+                {%if c.ports%}
+                  {%for port in c.ports%}
+                    <p>{{forloop.counter}} IP: {{port.IP}}\{{port.Type}} | Private {{port.PrivatePort}}<->Public {{port.PublicPort}}</p>
+                  {%endfor%}
+                {%endif%}
+              </td>
+              <td>
+                <!-- Button trigger modal -->
+               <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#model_{{c.id}}">
+                  Manage
+                </button>
+              </td>
+
+            </tr>
+            <!-- The Modal -->
+          <div class="modal fade" id="model_{{c.id}}">
+            <div class="modal-dialog modal-xl">
+              <div class="modal-content">
+
+                <!-- Modal Header -->
+                <div class="modal-header">
+                  <h4 class="modal-title">{{c.names}}</h4>
+                  <button type="button" class="close" data-dismiss="modal">&times;</button>
+                </div>
+
+                <!-- Modal body -->
+                <div class="modal-body">
+                  Modal body..
+                </div>
+
+                <!-- Modal footer -->
+                <div class="modal-footer">
+                  <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                </div>
+
+              </div>
+            </div>
+          </div>
+          {%endfor%}
+        {%endif%}
+      </tbody>
+    </table>
+
+{%endblock%}
