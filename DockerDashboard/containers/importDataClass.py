@@ -5,7 +5,7 @@ from containers import apis
 class container:
     def __init__(self , id , names , image , imageID , command , created , ports, Labels, State, Status, HostConfig, NetworkSettings, Mounts):
         self.id = id[:10]
-        self.names = names[0]
+        self.names = str(names[0]).split("/")[1]
         self.image = image[:10]
         self.imageID = imageID[:10]
         self.command = command[:20]
@@ -22,22 +22,25 @@ class container:
         return f"Container class: (id:{self.id}, names:{self.names})"
     list = []
     string = ""
+
 class jsonQuery:
     def __init__(self, server, query):
         self.q = query
         self.server = server
     def query(self):
+        #returning the data as DIC object
         return requests.get(f"http://{self.server.host}:{self.server.port}/{self.q}").json()
     def retuenAsJson(self):
+        # returning the data as STR object
         from json import dumps
         return dumps(self.query())
-def testJson():
+
+def exmale_query():
     from servers.models import server
     s = server.objects.all()[0]
     #from containers.apis import apis
     d = apis.apis.containers()['print_all_containers']
     return jsonQuery(s, d).retuenAsJson()
-
 
 
 class print_all_containers():
@@ -66,4 +69,21 @@ class print_all_containers():
     def retrunAsList(self):
         return self.containers
 
+class print_container_infomration:
+    json = ""
+    def __init__(self, container):
+        self.container = container
 
+        #select Server
+        from servers.models import server
+        s = server.objects.all() [0]
+
+        #Build url path for the json query
+        url = f"containers/{self.container}/json"
+
+        #Create a new API query
+        self.json =  jsonQuery(s , url).query()
+
+    def retrunQuery(self):
+        #Return JSON data
+        return self.json

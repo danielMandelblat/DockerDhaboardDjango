@@ -28,8 +28,9 @@
 
        <nav class="nav nav-pills nav-fill">
         <a class="nav-link active" href="#">Manage</a>
-        <a class="nav-link" href="#">Much longer nav link</a>
-        <a class="nav-link" href="#">Link</a>
+        <a class="nav-link" href="#">Network</a>
+        <a class="nav-link" href="#">Storage</a>
+        <a class="nav-link" href="#">Tools</a>
         <a class="nav-link disabled" href="#" tabindex="-1" aria-disabled="true">Disabled</a>
       </nav>
 
@@ -38,9 +39,24 @@
   <div class="card">
 
     <div class="card-body">
-      {%block data%}
-        Base data - please change
-      {%endblock%}
+        <div class="container">
+            <div class="row">
+                <div class="col-sm">
+                  {%block data%}
+                    Base data - please change (Column No 1)
+                  {%endblock%}
+                </div>
+                <div class="col-sm">
+                    Column no 2
+                </div>
+                <div class="col-sm">
+                    {%block image%}
+                        <img src="{%static 'img\containers\manage\unknow.png'%}">
+                    {%endblock%}
+                </div>
+            </div>
+        </div>
+
     </div>
   </div>
   </body>

@@ -12,7 +12,7 @@ class jsonConvertor:
 
 class apis:
     @staticmethod
-    def containers():
+    def containers(**kwargs):
         data = {"print_all_containers" : "containers/json?all=true",
                 }
         return data

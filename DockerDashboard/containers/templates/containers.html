@@ -28,8 +28,7 @@
               <td>{{c.id}}</td>
               <td>
                 {%if c.State == 'exited'%}
-                  <div class="spinner-grow text-danger spinner-grow-sm" role="status">
-                  </div>
+                  <img src="{%static 'img\containers\stop.jpg'%}" width="17">
                   <p>Exited</p>
                 {%elif c.State == 'created'%}
                    <div class="spinner-grow text-warning spinner-grow-sm" role="status">
@@ -48,9 +47,28 @@
               <td>{{c.created}}</td>
               <td>
                 {%if c.ports%}
+                  <table class="table table-hover table-sm table-Active">
+                      <thead>
+                        <tr>
+                          <th scope="col">#</th>
+                          <th scope="col">IP</th>
+                          <th scope="col">Type</th>
+                          <th scope="col">Private</th>
+                          <th scope="col">Public</th>
+                        </tr>
+                      </thead>
+                      <tbody>
                   {%for port in c.ports%}
-                    <p>{{forloop.counter}} IP: {{port.IP}}\{{port.Type}} | Private {{port.PrivatePort}}<->Public {{port.PublicPort}}</p>
+                        <tr>
+                          <th scope="row">{{forloop.counter}}</th>
+                          <td>{{port.IP}}</td>
+                          <td>{{port.Type}}</td>
+                          <td>{{port.PrivatePort}}</td>
+                          <td>{{port.PublicPort}}</td>
+                        </tr>
                   {%endfor%}
+                      </tbody>
+                    </table>
                 {%endif%}
               </td>
               <td>
@@ -74,7 +92,7 @@
 
                 <!-- Modal body -->
                 <div class="modal-body">
-                  Modal body..
+                  <iframe src="/containers/{{c.id}}/manage/main/" title="Manage {{c.names}}" width="1100" height="600"></iframe>
                 </div>
 
                 <!-- Modal footer -->
