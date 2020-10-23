@@ -16,7 +16,7 @@ def manage_container_main(request, **kwargs):
         from containers.importDataClass import print_container_infomration as containerInfo
 
         data = {"container": kwargs ['container']}
-        data['result'] = containerInfo(kwargs ['container']).retrunQuery
+        data['c'] = containerInfo(kwargs ['container']).retrunQuery
 
         if kwargs['option'] == 'main':
             return render(request, r'manage_container\main.html', data)
