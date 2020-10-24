@@ -1,5 +1,5 @@
 import requests
-from containers.models import container as container_class
+from containers.models import container
 #Class
 #================================
 class container:
@@ -26,12 +26,13 @@ class container:
     string = ""
 
 class jsonQuery:
-    def __init__(self, server, query):
+    def __init__(self, server, port, query):
         self.q = query
         self.server = server
+        self.port = port
     def query(self):
         #returning the data as DIC object
-        return requests.get(f"http://{self.server.host}:{self.server.port}/{self.q}").json()
+        return requests.get(f"http://{self.server}:{self.port}/{self.q}").json()
     def retuenAsJson(self):
         # returning the data as STR object
         from json import dumps
@@ -77,21 +78,25 @@ class print_container_infomration:
 
         #select Server
         from servers.models import server
-        s = server.objects.all() [0]
+
+        server = container.objects.filter(id='aa2cde6e9f').first().container_server.host
+        port = container.objects.filter(id='aa2cde6e9f').first().container_server.port
+
 
         #Build url path for the json query
-        url = f"containers/{self.container}/json"
+        q = f"containers/{self.container}/json"
 
         #Create a new API query
-        self.json =  jsonQuery(s, url).query()
+        self.json =  jsonQuery(server, port, q).query()
 
     def retrunQuery(self):
         #Return JSON data
         return self.json
 
-    def print_container_server(self):
-        container_class.objects.filter(id=self.container.id).first()
-        return container_class.container_server
+    @staticmethod
+    def print_container_server(c):
+        container.objects.filter(id=c.id).first()
+        return container.container_server
 
     @staticmethod
     def push_container_to_db(c):
