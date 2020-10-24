@@ -70,7 +70,25 @@
           </table>
 
       </div>
-      <div class="tab-pane fade" id="list-messages" role="tabpanel" aria-labelledby="list-messages-list">...</div>
+      <div class="tab-pane fade" id="list-messages" role="tabpanel" aria-labelledby="list-messages-list">
+
+          {%for m in c.Mounts%}
+          <h3>Mount data No'{{forloop.counter}}</h3>
+          <br>
+              <table class="table table-sm table-hover">
+                      <tbody>
+                          {%for k, v in m.items%}
+                              <tr>
+                                  <th scope="row">{{k}}</th>
+                                  <td>{{v}}</td>
+                              </tr>
+                          {%endfor%}
+                      </tbody>
+              </table>
+              <br>
+          {%endfor%}
+
+      </div>
       <div class="tab-pane fade" id="list-settings" role="tabpanel" aria-labelledby="list-settings-list">...</div>
     </div>
   </div>
