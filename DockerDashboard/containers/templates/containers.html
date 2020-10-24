@@ -9,7 +9,7 @@
       <thead>
         <tr>
           <th scope="col">#</th>
-          <th scope="col"></th>
+          <th scope="col">Server</th>
           <th scope="col">Id</th>
           <th scope="col">Status</th>
           <th scope="col">Names</th>
@@ -25,7 +25,7 @@
             <tr>
               <th scope="row">{{forloop.counter}}</th>
               <td>
-                <img src="{%static '\img\containers\docker_blue_icon.png'%}" width="20">
+                <img src="{%static '\img\containers\docker_blue_icon.png'%}" width="20"> {{c.server}}
               </td>
               <td>{{c.id}}</td>
               <td>

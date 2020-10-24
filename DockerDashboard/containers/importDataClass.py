@@ -1,9 +1,9 @@
 import requests
-from containers import apis
+from containers.models import container as container_class
 #Class
 #================================
 class container:
-    def __init__(self , id , names , image , imageID , command , created , ports, Labels, State, Status, HostConfig, NetworkSettings, Mounts):
+    def __init__(self , id , names , image , imageID , command , created , ports, Labels, State, Status, HostConfig, NetworkSettings, Mounts, server, server_port ):
         self.id = id[:10]
         self.names = str(names[0]).split("/")[1]
         self.image = image[:10]
@@ -17,6 +17,8 @@ class container:
         self.HostConfig = HostConfig
         self.NetworkSettings = NetworkSettings
         self.Mounts = Mounts
+        self.server = server
+        self.server_port = server_port
 
     def __str__(self):
         return f"Container class: (id:{self.id}, names:{self.names})"
@@ -35,14 +37,6 @@ class jsonQuery:
         from json import dumps
         return dumps(self.query())
 
-def exmale_query():
-    from servers.models import server
-    s = server.objects.all()[0]
-    #from containers.apis import apis
-    d = apis.apis.containers()['print_all_containers']
-    return jsonQuery(s, d).retuenAsJson()
-
-
 class print_all_containers():
     containers = []
     def __init__(self):
@@ -50,7 +44,7 @@ class print_all_containers():
 
         from servers.models import server
         servers = server.objects.all()
-        url = apis.apis.containers() ['print_all_containers']
+        url = "containers/json?all=true"
 
         #For each server bring containers
         for server in servers:
@@ -58,14 +52,21 @@ class print_all_containers():
                 api = jsonQuery(server,url).query()
                 for c in api:
                     # Collect all returned containers to list as objects
-                    self.containers.append(container(id = c ['Id'] , names = c ['Names'] , image = c ['Image'] ,
+                    current_container = container(id = c ['Id'] , names = c ['Names'] , image = c ['Image'] ,
                                                      imageID = c ['ImageID'] , command = c ['Command'] ,
                                                      created = c ['Created'] , ports = c ['Ports'] ,
                                                      Labels = c ['Labels'] , State = c ['State'] ,
                                                      Status = c ['Status'] ,
                                                      HostConfig = c ['HostConfig'] ,
                                                      NetworkSettings = c ['NetworkSettings'] ,
-                                                     Mounts = c ['Mounts']))
+                                                     Mounts = c ['Mounts'], server = f"{server.host}",
+                                                     server_port = f"{server.port}")
+                    #Add to 'containers' list
+                    self.containers.append(current_container)
+
+                    #Push 'container' object to DB
+                    print_container_infomration.push_container_to_db(current_container)
+
     def retrunAsList(self):
         return self.containers
 
@@ -82,8 +83,24 @@ class print_container_infomration:
         url = f"containers/{self.container}/json"
 
         #Create a new API query
-        self.json =  jsonQuery(s , url).query()
+        self.json =  jsonQuery(s, url).query()
 
     def retrunQuery(self):
         #Return JSON data
         return self.json
+
+    def print_container_server(self):
+        container_class.objects.filter(id=self.container.id).first()
+        return container_class.container_server
+
+    @staticmethod
+    def push_container_to_db(c):
+        from servers.models import server
+        from containers.models import container
+
+        filterd_server = server.objects.filter(host = f'{c.server}', port=f"{c.server_port}").first()
+        current_container = container(id=c.id, name=c.names, image=c.image, container_server=filterd_server)
+        current_container.save()
+
+
+

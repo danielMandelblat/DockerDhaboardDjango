@@ -12,7 +12,6 @@ def index(request):
 
 @xframe_options_exempt
 def manage_container_main(request, **kwargs):
-
     if 'container' and 'option' in kwargs:
         #Collect all data about the container
         from containers.importDataClass import print_container_infomration as containerInfo
@@ -23,5 +22,6 @@ def manage_container_main(request, **kwargs):
         if kwargs['option'] == 'main':
             return render(request, r'manage_container\main.html', data)
 
-def container_action(request, container):
+def container_action(request, container, action):
+    print(f"!!!!container: {container}  | action: {action}")
     return redirect(index)
