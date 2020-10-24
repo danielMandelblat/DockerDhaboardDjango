@@ -2,11 +2,13 @@ from django.shortcuts import render
 from containers.importDataClass import print_all_containers as cn
 from django.views.decorators.clickjacking import xframe_options_exempt
 
+
+
+
 def index(request):
     data={"title":"Containers", "cn":cn().retrunAsList(),
           "container" : "test2"}
     return render(request, 'containers.html', data)
-
 
 @xframe_options_exempt
 def manage_container_main(request, **kwargs):

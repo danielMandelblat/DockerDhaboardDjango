@@ -2,6 +2,9 @@
 {%load static%}
 {%block data%}
 
+<h4>Total containers: <b class="text text-primary">{{cn|length}}</b></h4>
+<br>
+
     <table class="table table-sm table-hover">
       <thead>
         <tr>
@@ -13,8 +16,7 @@
           <th scope="col">Image</th>
           <th scope="col">Command</th>
           <th scope="col">Created at</th>
-          <th scope="col">Ports</th>
-          <th scope="col">Ports</th>
+          <th scope="col">Manage</th>
         </tr>
       </thead>
       <tbody>
@@ -27,50 +29,31 @@
               </td>
               <td>{{c.id}}</td>
               <td>
+                <div class="d-flex">
                 {%if c.State == 'exited'%}
-                  <img src="{%static 'img\containers\stop.jpg'%}" width="17">
-                  <p>Exited</p>
+                  <img src="{%static 'img\containers\stop.jpg'%}" height="15">
+                  <p class="text text-danger"> Exited</p>
                 {%elif c.State == 'created'%}
+
                    <div class="spinner-grow text-warning spinner-grow-sm" role="status">
                    </div>
-                   <p>Created</p>
+                   <p class="text text-warning"> Created</p>
+
                 {%elif c.State == 'running'%}
                   <div class="spinner-border spinner-border-sm text-success" role="status">
                   </div>
-                  <p>Running</p>
+                  <p class="text text-success"> Running</p>
                 {%else%}
+                   <div class="spinner-grow text-warning spinner-grow-sm" role="status">
+                   </div>
+                   <p class="text text-warning"> {{c.State}}</p>
                 {%endif%}
+                 </div>
               </td>
               <td>{{c.names}}</td>
               <td>{{c.imageID}}</td>
               <td>{{c.command}}</td>
               <td>{{c.created}}</td>
-              <td>
-                {%if c.ports%}
-                  <table class="table table-hover table-sm table-Active">
-                      <thead>
-                        <tr>
-                          <th scope="col">#</th>
-                          <th scope="col">IP</th>
-                          <th scope="col">Type</th>
-                          <th scope="col">Private</th>
-                          <th scope="col">Public</th>
-                        </tr>
-                      </thead>
-                      <tbody>
-                  {%for port in c.ports%}
-                        <tr>
-                          <th scope="row">{{forloop.counter}}</th>
-                          <td>{{port.IP}}</td>
-                          <td>{{port.Type}}</td>
-                          <td>{{port.PrivatePort}}</td>
-                          <td>{{port.PublicPort}}</td>
-                        </tr>
-                  {%endfor%}
-                      </tbody>
-                    </table>
-                {%endif%}
-              </td>
               <td>
                 <!-- Button trigger modal -->
                <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#model_{{c.id}}">
@@ -92,7 +75,7 @@
 
                 <!-- Modal body -->
                 <div class="modal-body">
-                  <iframe src="/containers/{{c.id}}/manage/main/" title="Manage {{c.names}}" width="1100" height="600"></iframe>
+                  <iframe src="/containers/{{c.id}}/manage/main/" title="Manage {{c.names}}" width="1080" height="800"></iframe>
                 </div>
 
                 <!-- Modal footer -->

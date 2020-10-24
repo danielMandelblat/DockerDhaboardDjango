@@ -1,97 +1,275 @@
 {%extends 'manage_container\base.html'%}
 {%load static%}
 {%block data%}
-
 <div class="row">
-  <div class="col-4">
-    <div class="list-group" id="list-tab" role="tablist">
-      <a class="list-group-item list-group-item-action active" id="list-home-list" data-toggle="list" href="#list-home" role="tab" aria-controls="home">Basic</a>
-      <a class="list-group-item list-group-item-action" id="list-profile-list" data-toggle="list" href="#list-profile" role="tab" aria-controls="profile">Network</a>
-      <a class="list-group-item list-group-item-action" id="list-messages-list" data-toggle="list" href="#list-messages" role="tab" aria-controls="messages">Storage</a>
-      <a class="list-group-item list-group-item-action" id="list-settings-list" data-toggle="list" href="#list-settings" role="tab" aria-controls="settings">Settings</a>
+    <div class="col-3">
+        <div class="list-group" id="myList" role="tablist">
+          <a class="list-group-item list-group-item-action active" data-toggle="list" href="#home" role="tab">Home</a>
+          <a class="list-group-item list-group-item-action" data-toggle="list" href="#networks" role="tab">Networks</a>
+          <a class="list-group-item list-group-item-action" data-toggle="list" href="#storage" role="tab">Storage</a>
+          <a class="list-group-item list-group-item-action" data-toggle="list" href="#overview" role="tab">All info</a>
+        </div>
     </div>
-  </div>
-  <div class="col-8">
-    <div class="tab-content" id="nav-tabContent">
-      <div class="tab-pane fade show active" id="list-home" role="tabpanel" aria-labelledby="list-home-list">
-
-          <table class="table table-sm table-hover">
-              <tbody>
-                <tr>
-                  <th scope="row">Name</th>
-                  <td>{{c.Name | slice:"10"}}</td>
-                </tr>
-                <tr>
-                  <th scope="row">Id</th>
-                  <td>{{c.Id | slice:"10"}}</td>
-                </tr>
-                <tr>
-                  <th scope="row">State</th>
-                  <td>{{c.State.Status}}</td>
-                </tr>
-                <tr>
-                  <th scope="row">Created</th>
-                  <td>{{c.Created | slice:"19"}}</td>
-                </tr>
-                <tr>
-                  <th scope="row">Image</th>
-                  <td>{{c.Image | slice:"19"}}</td>
-                </tr>
-                <tr>
-                  <th scope="row">Hostname</th>
-                  <td>{{c.Config.Hostname}}</td>
-                </tr>
-
-              </tbody>
-          </table>
-
-      </div>
-      <div class="tab-pane fade" id="list-profile" role="tabpanel" aria-labelledby="list-profile-list">
-
-          <table class="table table-sm table-hover">
-              <tbody>
-                <tr>
-                  <th scope="row">IP address</th>
-                  <td>{{c.NetworkSettings.IPAddress}}</td>
-                </tr>
-                <tr>
-                  <th scope="row">IPv6 address</th>
-                  <td>{{c.NetworkSettings.GlobalIPv6Address}}</td>
-                </tr>
-                <tr>
-                  <th scope="row">Mac address</th>
-                  <td>{{c.NetworkSettings.MacAddress}}</td>
-                </tr>
-                <tr>
-                  <th scope="row">Gateway</th>
-                  <td>{{c.NetworkSettings.Gateway}}</td>
-                </tr>
-              </tbody>
-          </table>
-
-      </div>
-      <div class="tab-pane fade" id="list-messages" role="tabpanel" aria-labelledby="list-messages-list">
-
-          {%for m in c.Mounts%}
-          <h3>Mount data No'{{forloop.counter}}</h3>
-          <br>
-              <table class="table table-sm table-hover">
-                      <tbody>
-                          {%for k, v in m.items%}
-                              <tr>
-                                  <th scope="row">{{k}}</th>
-                                  <td>{{v}}</td>
-                              </tr>
-                          {%endfor%}
-                      </tbody>
-              </table>
+    <!-- Tab panes -->
+    <div class="col-7">
+        <div class="tab-content">
+          <div class="tab-pane active" id="home" role="tabpanel">
+              <h3>{{c.Name}} home</h3>
               <br>
-          {%endfor%}
 
-      </div>
-      <div class="tab-pane fade" id="list-settings" role="tabpanel" aria-labelledby="list-settings-list">...</div>
+              {%if not c%}
+                <p>No data to show</p>
+              {%else%}
+                <table class="table table-sm table-hover">
+
+                    <tbody>
+                        <tr>
+                            <th>Name: </th>
+                            <td>
+                                {{c.Name}}
+                            </td>
+                        </tr>
+                        <tr>
+                            <th>Status: </th>
+                            <td>
+                                {{c.State.Status}}
+                            </td>
+                        </tr>
+                        <tr>
+                            <th>Id: </th>
+                            <td>
+                                {{c.Id}}
+                            </td>
+                        </tr>
+                        <tr>
+                            <th>Image: </th>
+                            <td>
+                                {{c.Config.Image}}
+                            </td>
+                        </tr>
+                    </tbody>
+
+                    <tbody>
+                        <tr>
+                            <th>PID: </th>
+                            <td>
+                                {{c.State.Pid}}
+                            </td>
+                        </tr>
+                        <tr>
+                            <th>Platform: </th>
+                            <td>
+                                {{c.Platform}}
+                            </td>
+                        </tr>
+                        <tr>
+                            <th>Hostname: </th>
+                            <td>
+                                {{c.Config.Hostname}}
+                            </td>
+                        </tr>
+                        <tr>
+                            <th>Command: </th>
+                            <td>
+                                {{c.Config.Cmd}}
+                            </td>
+                        </tr>
+
+                    <tbody>
+                        <tr>
+                            <th>IP Address: </th>
+                            <td>
+                                {{c.NetworkSettings.IPAddress}}
+                            </td>
+                        </tr>
+                        <tr>
+                            <th>Gateway: </th>
+                            <td>
+                                {{c.NetworkSettings.Gateway}}
+                            </td>
+                        </tr>
+                        <tr>
+                            <th>Mac Address: </th>
+                            <td>
+                                {{c.NetworkSettings.MacAddress}}
+                            </td>
+                        </tr>
+                        {% if c.NetworkSettings.Ports%}
+                            <tr>
+                                <th>Ports</th>
+                                <td class="text text-primary">
+                                    {%for k,v in c.NetworkSettings.Ports.items%}
+                                    <span>{{k}}: </span>
+                                    <span>
+                                        {%for ip in v%}
+                                            Host Ip: {{ip.HostIp}} HostPort: {{ip.HostPort}}
+                                        {%endfor%}
+                                    </span>
+                                    <br>
+                                    {%endfor%}
+                                </td>
+                            </tr>
+                        {%endif%}
+                    </tbody>
+                </table>
+              {%endif%}
+          </div>
+
+          <div class="tab-pane" id="networks" role="tabpanel">
+              <h3>{{c.Name}} network configuration</h3>
+              <br>
+
+              <table class="table table-sm table-hover">
+                  {%for k, v in c.NetworkSettings.items%}
+                      <tbody>
+                            {%if v == ''%}
+                                <th>{{k}}</th>
+                                <th class="text text-danger">None</th>
+                            {%elif k == 'Networks'%}
+                                <th>{{k}}</th>
+                                <th>
+                                {%for k_n, v_n in v.items%}
+                                    <div class="text text-primary">
+                                        <h5><b>{{k_n}}:</b></h5>
+                                    </div>
+                                    {%for k_n_d, v_n_d in v_n.items%}
+                                        <br>
+                                        {{k_n_d}}:
+                                        {%if v_n_d != ''%}
+                                            <b class="text text-success">{{v_n_d | slice:"15"}}</b>
+                                        {%else%}
+                                            <b class="text text-danger">None</b>
+                                        {%endif%}
+                                    {%endfor%}
+                                {%endfor%}
+                                </th>
+                            {%elif k == 'Ports'%}
+                                <th>{{k}}</th>
+                                <th>
+                                    {%for k_port, v_port in v.items%}
+                                    <table class="table table-sm">
+                                        <tbody>
+                                            <div class="text text-success">
+                                                {{forloop.counter}}:
+                                                {{k_port}}
+                                                {%for list in v_port%}
+                                                    {%for k_list, v_list in list.items%}
+                                                        {{k_list}}{{v_list}}
+                                                    {%endfor%}
+                                                {%endfor%}
+                                                <br>
+                                            </div>
+                                        </tbody>
+                                    </table>
+                            {%endfor%}
+                                </th>
+                            {%else%}
+                                <th>{{k}}</th>
+                                <th class="text text-success">{{v | slice:"15"}}</th>
+                            {%endif%}
+                      </tbody>
+                  {%endfor%}
+              </table>
+          </div>
+
+          <div class="tab-pane" id="storage" role="tabpanel">
+              <h3>{{c.Name}} Storage configuration</h3>
+              <br>
+
+              {%for m in c.Mounts%}
+              <h5 class="text text-primary"><b>Mount data No'{{forloop.counter}}:</b></h5>
+              <br>
+                  <table class="table table-sm table-hover">
+                          <tbody>
+                              {%for k, v in m.items%}
+                                  <tr>
+                                      <th scope="row">{{k}}</th>
+                                      <td>{{v}}</td>
+                                  </tr>
+                              {%endfor%}
+                          </tbody>
+                  </table>
+                  <br>
+              {%endfor%}
+
+          </div>
+
+          <div class="tab-pane" id="overview" role="tabpanel">
+              <h3>{{c.Name}} All information</h3>
+              <br>
+              <table class="table table-sm table-hover">
+              {%for k, v in c.items%}
+                <tr>
+                    {%if k != "NetworkSettings" and k != "Mounts"%}
+                        <th>{{k}}:</th>
+                        {%if v == '' %}
+                            <th class="text text-danger">None</th>
+                        {%else%}
+                            {%if v.0%}
+                                <td class="text text-success"><b>{{v | slice:"15"}}</b></td>
+                            {%else%}
+                                {%if v%}
+                                    <th>
+                                        {%for k_1, v_1 in v.items%}
+                                            {{k_1}}:
+                                            {%if v_1 == False%}
+                                                <span class="text text-danger">{{v_1}}</span>
+                                            {%elif v_1 == True %}
+                                                <span class="text text-primary">{{v_1}}</span>
+                                            {%elif v_1|length == 0 %}
+                                                <span class="text text-danger">None</span>
+                                            {%elif v_1.0%}
+                                                {%if v_1.0.1|length == 0%}
+                                                    <span class="text text-success">{{v_1}}</span>
+                                                {%else%}
+                                                    {%for line in v_1%}
+                                                        <il class="text text-success">{{line}}</il>
+                                                    {%endfor%}
+                                                {%endif%}
+                                                <br>
+                                            {%else%}
+                                                {%if not v_1%}
+                                                    <span class="text text-danger">None</span>
+                                                {%else%}
+                                                    {% for k_2, v_2 in v_1.items %}
+                                                         <br>
+                                                         <span class="text text-primary">{{k_2}}:</span>
+                                                         {% for k_3, v_3 in v_2.items %}
+                                                            <span class="text text-info">{{k_3}}</span>
+                                                            {%if v_3 != ""%}
+                                                                <span class="text text-info">{{v_3}}</span>
+                                                            {%else%}
+                                                                <span class="text text-danger">None</span>
+                                                            {%endif%}
+                                                         {%endfor%}
+                                                        {%if v_2|length > 40 %}
+                                                            <span class="text text-success">{{v_2 | slice:"40"}}...</span>
+                                                        {%elif v_2|length > 2%}
+                                                            <span class="text text-success">{{v_2}}</span>
+                                                        {%else%}
+                                                            <span class="text text-danger">None</span>
+                                                        {%endif%}
+                                                    {%endfor%}
+                                                    <br>
+
+                                                {%endif%}
+                                            {%endif%}
+                                            <br>
+                                        {%endfor%}
+                                    </th>
+                                {%else%}
+                                    <th class="text text-danger">None</th>
+                                {%endif%}
+                            {%endif%}
+                        {%endif%}
+                    {%endif%}
+                </tr>
+              {%endfor%}
+              </table>
+          </div>
+
+        </div>
     </div>
-  </div>
 </div>
 {%endblock%}
 
