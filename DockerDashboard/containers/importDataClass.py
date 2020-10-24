@@ -1,10 +1,10 @@
 import requests
-from containers.models import container
+from containers.models import container as container_model
 #Class
 #================================
 class container:
     def __init__(self , id , names , image , imageID , command , created , ports, Labels, State, Status, HostConfig, NetworkSettings, Mounts, server, server_port ):
-        self.id = id[:10]
+        self.id = id
         self.names = str(names[0]).split("/")[1]
         self.image = image[:10]
         self.imageID = imageID[:10]
@@ -50,7 +50,7 @@ class print_all_containers():
         #For each server bring containers
         for server in servers:
             if len(servers) != 0:
-                api = jsonQuery(server,url).query()
+                api = jsonQuery(server = server.host, port = server.port, query = url).query()
                 for c in api:
                     # Collect all returned containers to list as objects
                     current_container = container(id = c ['Id'] , names = c ['Names'] , image = c ['Image'] ,
@@ -73,15 +73,11 @@ class print_all_containers():
 
 class print_container_infomration:
     json = ""
-    def __init__(self, container):
-        self.container = container
+    def __init__(self, containerId):
+        self.container = containerId
 
-        #select Server
-        from servers.models import server
-
-        server = container.objects.filter(id='aa2cde6e9f').first().container_server.host
-        port = container.objects.filter(id='aa2cde6e9f').first().container_server.port
-
+        server = container_model.objects.filter(id=containerId).first().container_server.host
+        port = container_model.objects.filter(id=containerId).first().container_server.port
 
         #Build url path for the json query
         q = f"containers/{self.container}/json"
@@ -94,10 +90,10 @@ class print_container_infomration:
         return self.json
 
     @staticmethod
-    def print_container_server(c):
-        container.objects.filter(id=c.id).first()
-        return container.container_server
+    def return_container_object_from_db(containerId):
+        return container_model.objects.filter(id=containerId).first()
 
+    #!!!Warning do not edit - the below function is a part of the collecting containers inforamtion !!!
     @staticmethod
     def push_container_to_db(c):
         from servers.models import server

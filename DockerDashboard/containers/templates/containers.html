@@ -27,7 +27,7 @@
               <td>
                 <img src="{%static '\img\containers\docker_blue_icon.png'%}" width="20"> {{c.server}}
               </td>
-              <td>{{c.id}}</td>
+              <td>{{c.id|slice:"15"}}</td>
               <td>
                 <div class="d-flex">
                 {%if c.State == 'exited'%}
@@ -76,8 +76,8 @@
                 </div>
 
                 <!-- Modal body -->
-                <div class="modal-body">
-                  <iframe src="/containers/{{c.id}}/manage/main/" title="Manage {{c.names}}" width="1080" height="800"></iframe>
+                <div class="modal-body ">
+                  <iframe src="/containers/{{c.id}}/manage/main/" title="Manage {{c.names}}" width="1080" height="800" class="embed-responsive-item"></iframe>
                 </div>
 
                 <!-- Modal footer -->

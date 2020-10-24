@@ -17,11 +17,15 @@ def manage_container_main(request, **kwargs):
         from containers.importDataClass import print_container_infomration as containerInfo
 
         data = {"container": kwargs ['container']}
+
+        #Add values to data dic
         data['c'] = containerInfo(kwargs ['container']).retrunQuery
+
+        data['db'] = containerInfo.return_container_object_from_db(containerId = kwargs['container'])
 
         if kwargs['option'] == 'main':
             return render(request, r'manage_container\main.html', data)
 
 def container_action(request, container, action):
     print(f"!!!!container: {container}  | action: {action}")
-    return redirect(index)
+    return redirect(manage_container_main, container=container, option='main')

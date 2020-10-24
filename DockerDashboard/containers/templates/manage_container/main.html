@@ -49,7 +49,7 @@
                                       </div>
                                       <p class="text text-success"> Running</p>
 
-                                      <a href="{%url 'container_action' container=c.Id|slice:'15' action='stop' %}" class="btn btn-danger btn-sm active" role="button" aria-pressed="true">Power Off </a>
+                                      <a href="{%url 'container_action' container=c.Id action='stop' %}" class="btn btn-danger btn-sm active" role="button" aria-pressed="true">Power Off </a>
                                     {%else%}
                                        <div class="spinner-grow text-warning spinner-grow-sm" role="status">
                                        </div>
@@ -73,7 +73,7 @@
                         <tr>
                             <th>Server: </th>
                             <td>
-                                {{c.server}}
+                                {{db.container_server.port}}@{{db.container_server.host}}
                             </td>
                         </tr>
                     </tbody>
