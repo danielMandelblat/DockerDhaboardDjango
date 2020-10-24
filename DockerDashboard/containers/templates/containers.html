@@ -33,6 +33,8 @@
                 {%if c.State == 'exited'%}
                   <img src="{%static 'img\containers\stop.jpg'%}" height="15">
                   <p class="text text-danger"> Exited</p>
+                  <div class="custom-control custom-switch">
+
                 {%elif c.State == 'created'%}
 
                    <div class="spinner-grow text-warning spinner-grow-sm" role="status">

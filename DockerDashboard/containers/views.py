@@ -1,4 +1,4 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from containers.importDataClass import print_all_containers as cn
 from django.views.decorators.clickjacking import xframe_options_exempt
 
@@ -22,3 +22,6 @@ def manage_container_main(request, **kwargs):
 
         if kwargs['option'] == 'main':
             return render(request, r'manage_container\main.html', data)
+
+def container_action(request, container):
+    return redirect(index)
