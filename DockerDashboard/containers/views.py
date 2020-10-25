@@ -16,13 +16,16 @@ def manage_container_main(request, **kwargs):
 
         #Add values to data dic
         try:
-            data['c'] = containerInfo(kwargs ['container']).retrunQuery
+            data['c']  = containerInfo(kwargs ['container']).retrunQuery
             data['db'] = containerInfo.return_container_object_from_db(containerId = kwargs['container'])
         except Exception as e:
             print(e)
 
         if kwargs['option'] == 'main':
             return render(request, r'manage_container\main.html', data)
+
+        elif kwargs ['option'] == 'console':
+            return render(request , r'manage_container\console.html' , data)
 
 def container_action(request, action, container):
     from containers.apis import send_api

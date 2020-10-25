@@ -36,26 +36,55 @@
                         <tr>
                             <th>Status: </th>
                             <td>
+
                                 {%if c.State.Status == 'exited'%}
-                                      <img src="{%static 'img\containers\stop.jpg'%}" height="15">
-                                      <p class="text text-danger"> Exited</p>
+                                          <img src="{%static 'img\containers\stop.jpg'%}" height="15">
+                                          <p class="text text-danger"> Exited</p>
 
-                                      <a href="{%url 'container_action' container=c.Id action='start'%}" class="btn btn-primary btn-sm active" role="button" aria-pressed="true">Start</a>
+                                          <div class="btn-group " role="group" aria-label="Basic example">
+                                              <a href="{%url 'container_action' container=c.Id action='start'%}"><button type="button" class="btn btn-primary">Start</button></a>
+                                              <a href="{%url 'container_action' container=c.Id action='pause' %}"><button type="button" class="btn btn-warning">Pause</button></a>
+                                              <a href="{%url 'container_action' container=c.Id action='unpause' %}"><button type="button" class="btn btn-primary">Un Pause</button></a>
+                                              <a href="{%url 'container_action' container=c.Id action='stop'%}"><button type="button" class="btn btn-danger">Stop</button></a>
+                                              <a href="{%url 'container_action' container=c.Id action='restart' %}"><button type="button" class="btn btn-secondary">Restart</button></a>
+                                          </div>
                                     {%elif c.State.Status == 'created'%}
+                                           <div class="spinner-grow text-warning spinner-grow-sm" role="status">
+                                           </div>
+                                           <p class="text text-warning"> Created</p>
 
-                                       <div class="spinner-grow text-warning spinner-grow-sm" role="status">
-                                       </div>
-                                       <p class="text text-warning"> Created</p>
+                                          <div class="btn-group " role="group" aria-label="Basic example">
+                                              <a href="{%url 'container_action' container=c.Id action='start'%}"><button type="button" class="btn btn-primary">Start</button></a>
+                                              <a href="{%url 'container_action' container=c.Id action='pause' %}"><button type="button" class="btn btn-warning">Pause</button></a>
+                                              <a href="{%url 'container_action' container=c.Id action='unpause' %}"><button type="button" class="btn btn-primary">Un Pause</button></a>
+                                              <a href="{%url 'container_action' container=c.Id action='stop'%}"><button type="button" class="btn btn-danger">Stop</button></a>
+                                              <a href="{%url 'container_action' container=c.Id action='restart' %}"><button type="button" class="btn btn-secondary">Restart</button></a>
+                                          </div>
                                     {%elif c.State.Status == 'running'%}
-                                      <div class="spinner-border spinner-border-sm text-success" role="status">
-                                      </div>
-                                      <p class="text text-success"> Running</p>
+                                          <div class="spinner-border spinner-border-sm text-success" role="status">
+                                          </div>
+                                          <p class="text text-success"> Running</p>
 
-                                      <a href="{%url 'container_action' container=c.Id action='stop' %}" class="btn btn-danger btn-sm active" role="button" aria-pressed="true">Stop</a>
-                                    {%else%}
-                                       <div class="spinner-grow text-warning spinner-grow-sm" role="status">
-                                       </div>
-                                       <p class="text text-warning"> {{c.State}}</p>
+                                          <div class="btn-group " role="group" aria-label="Basic example">
+                                              <a href="{%url 'container_action' container=c.Id action='start'%}"><button type="button" class="btn btn-primary">Start</button></a>
+                                              <a href="{%url 'container_action' container=c.Id action='pause' %}"><button type="button" class="btn btn-warning">Pause</button></a>
+                                              <a href="{%url 'container_action' container=c.Id action='unpause' %}"><button type="button" class="btn btn-primary">Un Pause</button></a>
+                                              <a href="{%url 'container_action' container=c.Id action='stop'%}"><button type="button" class="btn btn-danger">Stop</button></a>
+                                              <a href="{%url 'container_action' container=c.Id action='restart' %}"><button type="button" class="btn btn-secondary">Restart</button></a>
+                                          </div>
+                                 {%else%}
+                                           <div class="spinner-grow text-warning spinner-grow-sm" role="status">
+                                           </div>
+                                           <p class="text text-warning"> {{c.State}}</p>
+                                           <br>
+
+                                          <div class="btn-group " role="group" aria-label="Basic example">
+                                              <a href="{%url 'container_action' container=c.Id action='start'%}"><button type="button" class="btn btn-primary">Start</button></a>
+                                              <a href="{%url 'container_action' container=c.Id action='pause' %}"><button type="button" class="btn btn-warning">Pause</button></a>
+                                              <a href="{%url 'container_action' container=c.Id action='unpause' %}"><button type="button" class="btn btn-primary">Un Pause</button></a>
+                                              <a href="{%url 'container_action' container=c.Id action='stop'%}"><button type="button" class="btn btn-danger">Stop</button></a>
+                                              <a href="{%url 'container_action' container=c.Id action='restart' %}"><button type="button" class="btn btn-secondary">Restart</button></a>
+                                          </div>
                                 {%endif%}
 
                             </td>

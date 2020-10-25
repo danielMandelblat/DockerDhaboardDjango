@@ -1,5 +1,24 @@
 {%extends 'manage_container\base.html'%}
 
 {%block data%}
-    Test
+<div class="card card-body">
+    <div class="row">
+        <div class="col-8">
+            <label><h5>Bash console</h5></label>
+            <form method="post">
+                <textarea class="form-control bg-dark text-success" id="exampleFormControlTextarea1" rows="5" spellcheck="false"></textarea>
+                <br>
+                <input class="btn btn-primary" type="submit" value="Execute">
+            </form>
+        </div>
+        <div class="col-4">
+            <label><h5>Output</h5></label>
+            <form method="post">
+                <textarea class="form-control text-primary" id="exampleFormControlTextarea1" rows="10" spellcheck="false"></textarea>
+                <br>
+                <input class="btn btn-primary" type="submit" value="Clear">
+            </form>
+        </div>
+    </div>
+</div>
 {%endblock%}
