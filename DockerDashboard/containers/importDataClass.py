@@ -25,14 +25,20 @@ class container:
     list = []
     string = ""
 
+
 class jsonQuery:
-    def __init__(self, server, port, query):
+    def __init__(self , server , port , query , **kwargs):
         self.q = query
         self.server = server
         self.port = port
+        if 'action' in kwargs:
+            self.action = kwargs ["action"]
+
     def query(self):
-        #returning the data as DIC object
+        # returning the data as DIC object
+        import requests
         return requests.get(f"http://{self.server}:{self.port}/{self.q}").json()
+
     def retuenAsJson(self):
         # returning the data as STR object
         from json import dumps
@@ -75,9 +81,10 @@ class print_container_infomration:
     json = ""
     def __init__(self, containerId):
         self.container = containerId
-
+        print(f"!!!!!!{containerId}")
         server = container_model.objects.filter(id=containerId).first().container_server.host
         port = container_model.objects.filter(id=containerId).first().container_server.port
+
 
         #Build url path for the json query
         q = f"containers/{self.container}/json"

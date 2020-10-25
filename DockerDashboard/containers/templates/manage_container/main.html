@@ -39,6 +39,8 @@
                                 {%if c.State.Status == 'exited'%}
                                       <img src="{%static 'img\containers\stop.jpg'%}" height="15">
                                       <p class="text text-danger"> Exited</p>
+
+                                      <a href="{%url 'container_action' container=c.Id action='start'%}" class="btn btn-primary btn-sm active" role="button" aria-pressed="true">Start</a>
                                     {%elif c.State.Status == 'created'%}
 
                                        <div class="spinner-grow text-warning spinner-grow-sm" role="status">
@@ -49,7 +51,7 @@
                                       </div>
                                       <p class="text text-success"> Running</p>
 
-                                      <a href="{%url 'container_action' container=c.Id action='stop' %}" class="btn btn-danger btn-sm active" role="button" aria-pressed="true">Power Off </a>
+                                      <a href="{%url 'container_action' container=c.Id action='stop' %}" class="btn btn-danger btn-sm active" role="button" aria-pressed="true">Stop</a>
                                     {%else%}
                                        <div class="spinner-grow text-warning spinner-grow-sm" role="status">
                                        </div>
@@ -79,12 +81,14 @@
                     </tbody>
 
                     <tbody>
+                        {%if c.State.Status == 'running' %}
                         <tr>
                             <th>PID: </th>
                             <td>
                                 {{c.State.Pid}}
                             </td>
                         </tr>
+                        {%endif%}
                         <tr>
                             <th>Platform: </th>
                             <td>
@@ -103,7 +107,7 @@
                                 {{c.Config.Cmd.0}}
                             </td>
                         </tr>
-
+                    {%if c.State.Status == 'running' %}
                     <tbody>
                         <tr>
                             <th>IP Address: </th>
@@ -140,6 +144,7 @@
                             </tr>
                         {%endif%}
                     </tbody>
+                    {%endif%}
                 </table>
               {%endif%}
           </div>
