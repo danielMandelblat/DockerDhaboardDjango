@@ -14,3 +14,5 @@ class container(models.Model):
 class tag(models.Model):
     name = models.CharField(max_length = 250, unique = True)
     id = models.CharField(max_length = 100, unique = True, primary_key = True)
+
+

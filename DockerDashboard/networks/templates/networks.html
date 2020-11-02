@@ -1,0 +1,50 @@
+{%extends 'base_networks.html'%}
+{%load static%}
+{%block networks%}
+        <br>
+        {%for server in networks%}
+        <div class="card">
+              <div class="card-header">
+                <div class="row">
+                    <img src="{%static 'img\networks\main\server.png'%}" width="55" height="55">
+                    <h1>{{server.server}}:{{server.port}}</h1>
+                </div>
+              </div>
+
+
+        <div class="card-body">
+            <table class="table table-hover table-sm">
+              <thead>
+                <tr>
+                  <th scope="col">Index</th>
+                  {%for k in networks.0.json.0.keys%}
+
+                    {%if k in filter%}
+                      <th scope="col">{{k}}</th>
+                    {%endif%}
+                  {%endfor%}
+                </tr>
+              </thead>
+              <tbody>
+                  {%for server in networks%}
+                    {% for net in server.json%}
+                      <tr>
+                          <td>{{forloop.counter}}</td>
+                          {%for key, value in net.items%}
+                              {%if key in filter %}
+                                <td>
+                                  {{value | slice:"10" }}
+                                </td>
+                               {%endif%}
+                          {%endfor%}
+                      </tr>
+                    {%endfor%}
+                  {%endfor%}
+              </tbody>
+            </table>
+        </div>
+        </div>
+        <br>
+        {%endfor%}
+
+{%endblock%}

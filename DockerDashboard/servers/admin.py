@@ -5,5 +5,5 @@ from servers.models import server
 class serverValidate(admin.ModelAdmin):
     readonly_fields = ['status']
 
-#Register server model
+#Register server model -
 admin.site.register(server, serverValidate)

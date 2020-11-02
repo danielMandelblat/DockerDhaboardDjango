@@ -34,22 +34,22 @@ class jsonQuery:
         # returning the data as STR object
         from json import dumps
         return dumps(self.query())
-class send_api:
-    from containers.models import container
-    class containers:
-        @staticmethod
-        def stop_container(containerId):
-            host = send_api.container.objects.filter(id=containerId).first().container_server.host
-            port = send_api.container.objects.filter(id=containerId).first().container_server.port
-            q = f"containers/{containerId}/stop"
+class query_all_servers:
+    def __init__(self, url):
+        self.url = url
 
-            return jsonQuery(server = host,  port = port, query = q).query_post()
+    def printAllServers(self):
+        from servers.models import server
+        return server.objects.all()
 
-        @staticmethod
-        def start_container(containerId):
-            host = send_api.container.objects.filter(id=containerId).first().container_server.host
-            port = send_api.container.objects.filter(id=containerId).first().container_server.port
-            q = f"containers/{containerId}/start"
+    def query(self):
+        data = []
+        for s in self.printAllServers():
+            data.append({"server":s.host, "port":s.port, "json":jsonQuery(server = s.host, port = s.port, query = self.url).query()})
+        return data
 
-            return jsonQuery(server = host, port = port, query = q).query_post()
-
+#ShortCut to query_all_servers(url).query()
+def query(url):
+    res = query_all_servers(url).query()
+    print(type(res))
+    return res
